@@ -1,49 +1,44 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import lead from "../img/lead.jpg";
 import { MdOutlineEmail } from "react-icons/md";
 import { BiSolidLockOpenAlt } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 const Login = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
-    usernameoremail:"",
-    password:"",
-  })
-  // useEffect(()=>{
-  //   if(localStorage.getItem("Lead")){
-  //     navigate("/");
-  //   }
-  // },[])
-let validateUsername_or_Email=(event)=>{
-  setUser({ ...user, usernameoremail: event.target.value });
-}
-let validatePassword=(event)=>{
-  setUser({ ...user, password: event.target.value });
-}
-let submitLogin=async(event)=>{
-  event.preventDefault();
-  let usernameoremail=user.usernameoremail;
-  let password=user.password;
+    usernameoremail: "",
+    password: "",
+  });
+  let validateUsername_or_Email = (event) => {
+    setUser({ ...user, usernameoremail: event.target.value });
+  }
+  let validatePassword = (event) => {
+    setUser({ ...user, password: event.target.value });
+  }
+  let submitLogin = async (event) => {
+    event.preventDefault();
+    let usernameoremail = user.usernameoremail;
+    let password = user.password;
 
-  const {status,data}=await axios.post(
-    "/api/users/login",
-    {usernameoremail,password},
-    {
-      headers:{
-        "Content-Type":"application/json"
-      }
-    });
-    if(status == 201){
-      Swal.fire("Invalid credentials","", "error");
-    }else if(status == 200){
-       Swal.fire("Login successful","", "success");
-       localStorage.setItem("Lead", data.token);
-       navigate("/");
+    const { status, data } = await axios.post(
+      "/api/users/login",
+      { usernameoremail, password },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+    if (status == 201) {
+      Swal.fire("Invalid credentials", "", "error");
+    } else if (status == 200) {
+      Swal.fire("Login successful", "", "success");
+      localStorage.setItem("Lead", JSON.stringify(data));
+      navigate("/home");
     }
-}
+  }
   return (
     <div className="grid grid-cols-2">
       <div className="h-screen w-full">
@@ -83,7 +78,7 @@ let submitLogin=async(event)=>{
               onChange={validateUsername_or_Email}
               value={user.usernameoremail}
             />
-        
+
           </div>
           <div className=" flex flex-right w-[440px] bg-white border-solid border-2 border-[#ddd] px-2 mt-2 mb-5">
             <div className="flex flex-col justify-center px-2">
@@ -103,10 +98,10 @@ let submitLogin=async(event)=>{
           </button>
           <p className=" text-lg">
             Don't have an account ?{" "}
-            <a href="/users/register" className="text-red-400">
+            <Link to="/register" className="text-red-400">
               {" "}
-             Register
-            </a>
+              Register
+            </Link>
           </p>
         </form>
       </div>

@@ -11,7 +11,7 @@ const Editlead = () => {
         email:"",
         phone:"",
         source:"",
-        status:"",
+        Status:"",
         city:"",
      })
      let validateName=(event)=>{
@@ -27,7 +27,7 @@ const Editlead = () => {
          setLead({ ...lead, source: event.target.value });
      }
      let validateStatus=(event)=>{
-         setLead({ ...lead, status: event.target.value });
+         setLead({ ...lead, Status: event.target.value });
      }
      let validateCity=(event)=>{
          setLead({ ...lead, city: event.target.value });
@@ -47,7 +47,7 @@ const Editlead = () => {
             email:data.lead.email,
             phone:data.lead.phone,
             source:data.lead.source,
-            status:data.lead.status,
+            Status:data.lead.Status,
             city:data.lead.city,
         })
      }
@@ -93,15 +93,21 @@ const Editlead = () => {
           />
       </div>
       <div className="flex flex-col ">
-          <label htmlFor="">Source</label>
-          <input
-            type="text"
-            className=" bg-transparent outline-none border-solid border-2 my-3 px-2 h-10"
-            placeholder="Source"
-            required
-            value={lead.source}
-            onChange={validateSource}
-          />
+      <label htmlFor="">Status</label>
+          <select
+              className=" bg-transparent outline-none border-solid border-2 my-3 px-2 h-10"
+              onChange={validateSource}
+              required
+              value={lead.source}
+            >
+              {/* <option disabled selected>--SELECT STATUS--</option> */}
+              <option>Call</option>
+              <option>Organic</option>
+              <option>Social Media</option>
+              <option>Website</option>
+              <option>Failed</option>
+              <option>Camaign</option>
+            </select>
       </div>   
       <div className="flex flex-col ">
           <label htmlFor="">Status</label>
@@ -109,7 +115,7 @@ const Editlead = () => {
               className=" bg-transparent outline-none border-solid border-2 my-3 px-2 h-10"
               onChange={validateStatus}
               required
-              value={lead.status}
+              value={lead.Status}
             >
               {/* <option disabled selected>--SELECT STATUS--</option> */}
               <option>New</option>

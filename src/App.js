@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import Addlead from "./components/Addlead";
-import Leadmanage from "./components/Leadmanage";
-import Editlead from "./components/Editlead";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import New from "./components/Leadstatus/New";
-import Contacted from "./components/Leadstatus/Contacted";
-import Closed from "./components/Leadstatus/Closed";
-import Working from "./components/Leadstatus/Working";
-import Failed from "./components/Leadstatus/Failed";
-import Qualified from "./components/Leadstatus/Qualified";
+import Home from "./Component/Home";
+import Addlead from "./Component/Addlead";
+import Editlead from "./Component/Editlead";
+import Managelead from "./Component/Managelead";
+import Navbar from "./Component/Navbar";
+import ViewComm from "./Component/Viewcomm";
+import ViewFollowup from "./Component/ViewFollowup";
+import Addcomm from "./Component/Addcomm";
 import axios from "axios";
+import Addfollowup from "./Component/Addfollowup";
+import Editcomm from "./Component/Editcomm";
+import Editfollowup from "./Component/Editfollowup";
 
 let deleteLead;
 function App() {
   const [leads, setLeads] = useState([]);
+  const [user, setUser] = useState();
   const getLeads = async () => {
     let { data } = await axios.get("/api");
     setLeads(data.leadinfos);
   };
-
   useEffect(() => {
     getLeads();
   }, []);
@@ -29,81 +28,27 @@ function App() {
     await axios.delete(`/api/${leadid}`);
     getLeads();
   };
+  // console.log(user.email);
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("User")));
+  }, []);
+
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-        <div className="flex">
-          <div>
-            <Sidebar />
-          </div>
-          <div className="bg-gray-200 w-full">
-            <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route exact path="/addlead" element={<Addlead />} />
-              <Route exact path="/edit/:leadId" element={<Editlead />} />
-              <Route exact path="/managelead" element={<Leadmanage data={leads} />} />
-              <Route
-                exact path="/new"
-                element={
-                  <New
-                    data={leads.filter((lead) => lead.status.includes("New"))}
-                  />
-                }
-              />
-              <Route
-                exact path="/closed"
-                element={
-                  <Closed
-                    data={leads.filter((lead) =>
-                      lead.status.includes("Closed")
-                    )}
-                  />
-                }
-              />
-              <Route
-                exact path="/contacted"
-                element={
-                  <Contacted
-                    data={leads.filter((lead) =>
-                      lead.status.includes("Contacted")
-                    )}
-                  />
-                }
-              />
-              <Route
-                exact path="/working"
-                element={
-                  <Working
-                    data={leads.filter((lead) =>
-                      lead.status.includes("Working")
-                    )}
-                  />
-                }
-              />
-              <Route
-                exact path="/failed"
-                element={
-                  <Failed
-                    data={leads.filter((lead) =>
-                      lead.status.includes("Failed")
-                    )}
-                  />
-                }
-              />
-              <Route
-                exact path="/qualified"
-                element={
-                  <Qualified
-                    data={leads.filter((lead) =>
-                      lead.status.includes("Qualified")
-                    )}
-                  />
-                }
-              />
-            </Routes>
-          </div>
-        </div>
+        {user && <Navbar user={user} />}
+        <Routes>
+          {!user && <Route exact path="/" element={<Home />} />}
+          <Route exact path="/addlead" element={<Addlead />} />
+          <Route exact path="/editlead/:leadId" element={<Editlead />} />
+          <Route exact path="/Leads" element={<Managelead leads={leads} />} />
+          <Route exact path="/viewcomm/:leadId" element={<ViewComm />} />
+          <Route exact path="/viewfollowup/:leadId" element={<ViewFollowup />} />
+          <Route exact path="/addcomm" element={<Addcomm/>}/>
+          <Route exact path="/addfollowup" element={<Addfollowup/>}/>
+          <Route exact path="/editcomm/:commId" element={<Editcomm/>}/>
+          <Route exact path="/editfollowup/:followid" element={<Editfollowup/>}/>
+        </Routes>
       </BrowserRouter>
     </>
   );

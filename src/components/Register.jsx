@@ -4,7 +4,7 @@ import { BiSolidLockOpenAlt } from "react-icons/bi";
 import { FaUserAlt } from "react-icons/fa";
 import lead from "../img/lead.jpg";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link} from "react-router-dom";
 import Swal from "sweetalert2";
 
 const Register = () => {
@@ -65,7 +65,7 @@ const Register = () => {
       return;
     } else if (status == 200) {
       Swal.fire("Registration successful", "", "success");
-      navigate("/users/login");
+      navigate("/login");
     }
   };
   return (
@@ -156,10 +156,10 @@ const Register = () => {
           </div>
           <p className=" text-lg">
             Already have an account ?{" "}
-            <a href="/users/login" className="text-red-400">
+            <Link to="/login" className="text-red-400">
               {" "}
               Login
-            </a>
+            </Link>
           </p>
         </form>
       </div>
